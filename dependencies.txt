@@ -1,0 +1,8 @@
+Django==1.2.3
+ipdb==0.2
+ipython==0.10.1
+wsgiref==0.1.2
+python-openid==2.2.5
+celery==2.1.4
+django-celery==2.1.4
+south==0.7.3

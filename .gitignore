@@ -5,3 +5,7 @@ initialization.py
 .DS_Store
 *~
 media/*
+build
+env
+*.kdev4
+database.sqlite
