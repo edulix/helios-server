@@ -9,3 +9,5 @@ build
 env
 *.kdev4
 database.sqlite
+settings.py
+manage.py
