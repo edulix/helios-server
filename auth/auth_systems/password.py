@@ -16,8 +16,8 @@ STATUS_UPDATES = False
 
 def create_user(username, password, name = None):
   from auth.models import User
-  
-  user = User.get_by_type_and_id('password', username)
+
+  user = User.objects.filter(user_type = 'password', user_id = username)
   if user:
     raise Exception('user exists')
   
