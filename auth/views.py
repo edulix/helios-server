@@ -26,7 +26,6 @@ def index(request):
   """
   the page from which one chooses how to log in.
   """
-  
   user = get_user(request)
 
   # single auth system?
@@ -52,6 +51,7 @@ def login_box_raw(request, return_url='/', auth_systems = None):
   a chunk of HTML that shows the various login options
   """
   default_auth_system_obj = None
+
   if auth.DEFAULT_AUTH_SYSTEM:
     default_auth_system_obj = AUTH_SYSTEMS[auth.DEFAULT_AUTH_SYSTEM]
 
