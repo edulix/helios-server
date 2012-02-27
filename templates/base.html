@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<!DOCTYPE html 
+<!DOCTYPE html
      PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -15,14 +15,13 @@
           <link rel="stylesheet" type="text/css"  media="screen, projection" href="{{ MEDIA_URL }}combined-{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}.css" />
       -->
       <link rel="stylesheet" type="text/css" media="screen" href="{{ MEDIA_URL }}main.css">
-
-	<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}helios/css/ui-lightness/jquery-ui-1.8.1.custom.css">
+      <link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}helios/css/ui-lightness/jquery-ui-1.8.1.custom.css">
     {% endblock %}
 
       <script language="javascript" src="{{ MEDIA_URL }}helios/js/jquery-1.4.2.min.js"></script>
       <script language="javascript" src="{{ MEDIA_URL }}helios/js/jquery-ui-1.8.1.custom.min.js"></script>
       <script language="javascript" src="{{ MEDIA_URL }}helios/js/jqsplitdatetime.js"></script>
-    
+
     <script language="javascript" src="{{ MEDIA_URL }}helios/helios/jquery.json.min.js"></script>
 
     {% block js %}
@@ -82,6 +81,7 @@ You are signed in as voter <u>{% if voter.alias %}{{voter.alias}}{% else %}{{vot
 <br clear="right" />
       </div>
     </div>
-    
+
   </body>
 </html>
+ 

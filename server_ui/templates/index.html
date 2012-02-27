@@ -1,5 +1,6 @@
-{% extends 'server_ui/templates/base.html' %}
-{% block title %}{{ settings.SITE_TITLE }}{% endblock %}
+{% extends 'templates/base.html' %}
+{% load i18n %}
+{% block title %}{{ settings.SITE_TITLE }} - {% trans "Home" %} {% endblock %}
 
 {% block header %}
 <h2>{{ settings.SITE_TITLE }}</h2>

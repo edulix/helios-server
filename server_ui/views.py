@@ -4,7 +4,7 @@ server_ui specific views
 
 from helios.models import *
 from auth.security import *
-from view_utils import *
+from helios.view_utils import *
 
 import helios.views
 import helios

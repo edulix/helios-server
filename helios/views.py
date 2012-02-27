@@ -19,7 +19,7 @@ from crypto import algs, electionalgs, elgamal
 from crypto import utils as cryptoutils
 from workflows import homomorphic
 from helios import utils as helios_utils
-from view_utils import *
+from helios.view_utils import *
 
 from auth.security import *
 from auth.auth_systems import *
@@ -100,7 +100,7 @@ def home(request):
   else:
     elections = []
   
-  return render_template(request, "index", {'elections' : elections})
+  return render_template(request, "server_ui/templates/index", {'elections' : elections})
   
 def stats(request):
   user = get_user(request)

@@ -99,7 +99,7 @@ def send_notification(user_id, user_info, message):
 
 def follow_view(request):
   if request.method == "GET":
-    from auth.view_utils import render_template
+    from helios.view_utils import render_template
     from auth.views import after
     
     return render_template(request, 'twitter/follow', {'user_to_follow': USER_TO_FOLLOW, 'reason_to_follow' : REASON_TO_FOLLOW})

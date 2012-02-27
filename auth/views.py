@@ -8,7 +8,7 @@ Ben Adida
 from django.http import *
 from django.core.urlresolvers import reverse
 
-from view_utils import *
+from helios.view_utils import *
 from auth.security import get_user
 
 from auth_systems import *
@@ -39,7 +39,7 @@ def index(request):
 
   #form = password.LoginForm()
 
-  return render_template(request,'index', {'return_url' : request.GET.get('return_url', '/'),
+  return render_template(request,'auth_index', {'return_url' : request.GET.get('return_url', '/'),
                                            'enabled_auth_systems' : auth.ENABLED_AUTH_SYSTEMS,
                                            'default_auth_system': auth.DEFAULT_AUTH_SYSTEM,
                                            'default_auth_system_obj': default_auth_system_obj})

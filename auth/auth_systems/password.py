@@ -9,11 +9,11 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
-
+from django.contrib import messages
 from auth.models import User
 import logging
 from ..forms import RegisterForm
-from ..view_utils import render_template
+from helios.view_utils import *
 from helios.utils import random_string
 
 # some parameters to indicate that status updating is possible
@@ -40,12 +40,12 @@ def password_check(user, password):
   
 # the view for logging in
 def password_login_view(request):
-  from auth.view_utils import render_template
   from auth.views import after
   from auth.models import User
 
   error = None
-  
+
+
   if request.method == "GET":
     form = LoginForm()
   else:
@@ -76,7 +76,6 @@ def password_forgotten_view(request):
   forgotten password view and submit.
   includes return_url
   """
-  from auth.view_utils import render_template
   from auth.models import User
 
   if request.method == "GET":
@@ -166,6 +165,9 @@ Your password: %s
       mail_title = _("Welcome to %s, %s") % (settings.SITE_TITLE, new_user.info['name'])
 
       send_mail(mail_title, mail_body, settings.SERVER_EMAIL, ["%s <%s>" % (new_user.info['name'], new_user.info['email'])], fail_silently=False)
+
+
+      messages.add_message(request, messages.SUCCESS, _('You have just been registered in %s. Check your email for your login details.') % settings.SITE_TITLE)
 
       return redirect('/')
 

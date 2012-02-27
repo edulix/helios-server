@@ -113,3 +113,24 @@ table.pretty th, td {
 .adminaction a {
     color: black;
 }
+
+/* flash messages */
+#flash_messages li {
+    border: 1px solid green;
+    background: #9dff77;
+    padding: 5px;
+    margin-right: 40px;
+    list-style: none;
+}
+
+#flash_messages li.error {
+    border: 1px solid red;
+    background: #ff7777;
+    color: white;
+    font-weight: bold;
+}
+
+#flash_messages li h3 {
+    color: #2A5F00;
+    font-weight:bold;
+}

@@ -8,7 +8,7 @@ ben@adida.net
 from celery.decorators import task
 
 from models import *
-from view_utils import render_template_raw
+from helios.view_utils import render_template_raw
 import signals
 
 import copy
