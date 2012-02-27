@@ -22,7 +22,7 @@ from helios import utils as helios_utils
 from view_utils import *
 
 from auth.security import *
-from auth.auth_systems import AUTH_SYSTEMS, can_list_categories
+from auth.auth_systems import *
 from auth.models import AuthenticationExpired
 
 from helios import security

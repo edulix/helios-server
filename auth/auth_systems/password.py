@@ -2,13 +2,19 @@
 Username/Password Authentication
 """
 
+from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django import forms
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponseRedirect
+from django.utils.translation import ugettext_lazy as _
 
+from auth.models import User
 import logging
+from ..forms import RegisterForm
+from ..view_utils import render_template
+from helios.utils import random_string
 
 # some parameters to indicate that status updating is possible
 STATUS_UPDATES = False
@@ -117,3 +123,50 @@ def send_message(user_id, user_name, user_info, subject, body):
   email = user_id
   name = user_name or user_info.get('name', email)
   send_mail(subject, body, settings.SERVER_EMAIL, ["%s <%s>" % (name, email)], fail_silently=False)    
+
+
+def password_register(request):
+  '''
+  Registers an user, sending him an email with his new password, therefore
+  checking that he entered the correct email.
+  '''
+  error = None
+
+  if 'password' not in settings.AUTH_ENABLED_AUTH_SYSTEMS:
+    return redirect('/')
+
+  if request.method == "GET":
+    form = RegisterForm()
+  else:
+    form = RegisterForm(request.POST)
+    if not form.is_valid():
+      error = _("Please fix the errors in the form.")
+    elif User.objects.filter(user_id=request.POST['email']).exists():
+      error = _("An user with the given email address is already registered.")
+    else:
+      try:
+        new_user = User.objects.create(user_type='password',user_id=request.POST['email'],
+          name=request.POST['name'], info={'name':request.POST['name'],
+          'email':request.POST['email'],'password': random_string(10)})
+      except:
+        error = _("User already exists.")
+        return render_template(request, 'password/register', {'form': form, 'error': error})
+      new_user.save()
+
+      mail_body = _("""
+
+Hi %s, you just registered into %s. Here are your login details:
+
+Your username: %s
+Your password: %s
+
+--
+%s
+""") % (new_user.info['name'], settings.SITE_TITLE, new_user.user_id, new_user.info['password'], settings.SITE_TITLE)
+      mail_title = _("Welcome to %s, %s") % (settings.SITE_TITLE, new_user.info['name'])
+
+      send_mail(mail_title, mail_body, settings.SERVER_EMAIL, ["%s <%s>" % (new_user.info['name'], new_user.info['email'])], fail_silently=False)
+
+      return redirect('/')
+
+  return render_template(request, 'password/register', {'form': form, 'error': error})

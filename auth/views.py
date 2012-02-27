@@ -11,9 +11,7 @@ from django.core.urlresolvers import reverse
 from view_utils import *
 from auth.security import get_user
 
-import auth_systems
-from auth_systems import AUTH_SYSTEMS
-from auth_systems import password
+from auth_systems import *
 import auth
 
 import copy, urllib
@@ -61,6 +59,7 @@ def login_box_raw(request, return_url='/', auth_systems = None):
   else:
     enabled_auth_systems = set(auth.ENABLED_AUTH_SYSTEMS).intersection(set(AUTH_SYSTEMS.keys()))
 
+  from auth_systems import password
   form = password.LoginForm()
 
   return render_template_raw(request, 'login_box', {

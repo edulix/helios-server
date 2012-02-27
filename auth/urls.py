@@ -7,7 +7,7 @@ Ben Adida (ben@adida.net)
 from django.conf.urls.defaults import *
 
 from views import *
-from auth_systems.password import password_login_view, password_forgotten_view
+from auth_systems.password import password_login_view, password_forgotten_view, password_register
 from auth_systems.twitter import follow_view
 
 urlpatterns = patterns('',
@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     # password auth
     (r'^password/login', password_login_view),
     (r'^password/forgot', password_forgotten_view),
+    (r'^password/register', password_register),
 
     # twitter
     (r'^twitter/follow', follow_view),

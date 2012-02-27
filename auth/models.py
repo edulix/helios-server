@@ -9,10 +9,11 @@ Ben Adida
 
 from django.db import models
 from jsonfield import JSONField
+from django.utils.translation import ugettext_lazy as _
 
 import datetime, logging
 
-from auth_systems import AUTH_SYSTEMS, can_check_constraint, can_list_categories
+from auth_systems import AUTH_SYSTEMS
 
 # an exception to catch when a user is no longer authenticated
 class AuthenticationExpired(Exception):
@@ -20,9 +21,9 @@ class AuthenticationExpired(Exception):
 
 class User(models.Model):
   user_type = models.CharField(max_length=50)
-  user_id = models.CharField(max_length=100)
-    
-  name = models.CharField(max_length=200, null=True)
+  user_id = models.EmailField(_('Email'), max_length=100)
+
+  name = models.CharField(_("Name and surname"), max_length=200, null=True)
   
   # other properties
   info = JSONField()
@@ -35,7 +36,10 @@ class User(models.Model):
 
   class Meta:
     unique_together = (('user_type', 'user_id'),)
-    
+
+  def __unicode__(self):
+    return self.user_type + ', ' + self.user_id + ', ' +  self.name
+
   @classmethod
   def _get_type_and_id(cls, user_type, user_id):
     return "%s:%s" % (user_type, user_id)    
