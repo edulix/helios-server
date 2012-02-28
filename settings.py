@@ -204,3 +204,9 @@ CELERY_RESULT_DBURI = DATABASES['default']
 
 # for testing
 CELERY_ALWAYS_EAGER = True
+
+# customize things is local_settings.py which is in .gitignore
+try:
+  from local_settings import *
+except:
+  pass

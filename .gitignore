@@ -11,3 +11,4 @@ env
 database.sqlite
 settings.py
 manage.py
+local_settings.py
