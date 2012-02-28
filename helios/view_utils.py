@@ -10,6 +10,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 from django.template.loader import render_to_string
 from django.contrib import messages
+from django.utils.translation import ugettext_lazy as _
 
 import utils
 
@@ -89,7 +90,7 @@ def json(func):
         return render_json(utils.to_json(return_val))
       except Exception, e:
         import logging
-        logging.error("problem with serialization: " + str(return_val) + " / " + str(e))
+        logging.error(_("problem with serialization: ") + str(return_val) + " / " + str(e))
         raise e
 
     return update_wrapper(convert_to_json,func)

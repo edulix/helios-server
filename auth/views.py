@@ -7,6 +7,7 @@ Ben Adida
 
 from django.http import *
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 
 from helios.view_utils import *
 from auth.security import get_user
@@ -148,7 +149,7 @@ def _do_auth(request):
   if auth_url:
     return HttpResponseRedirect(auth_url)
   else:
-    return HttpResponse("an error occurred trying to contact " + system_name +", try again later")
+    return HttpResponse(_("an error occurred trying to contact " + system_name +", try again later"))
   
 def start(request, system_name):
   if not (system_name in auth.ENABLED_AUTH_SYSTEMS):

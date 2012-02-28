@@ -6,6 +6,7 @@ import logging
 
 from django.conf import settings
 from django.core.mail import send_mail
+from django.utils.translation import ugettext_lazy as _
 
 APP_ID = settings.FACEBOOK_APP_ID
 API_KEY = settings.FACEBOOK_API_KEY
@@ -16,7 +17,7 @@ import urllib, urllib2, cgi
 
 # some parameters to indicate that status updating is possible
 STATUS_UPDATES = True
-STATUS_UPDATE_WORDING_TEMPLATE = "Send %s to your facebook status"
+STATUS_UPDATE_WORDING_TEMPLATE = _("Send %s to your facebook status")
 
 from auth import utils
 
@@ -115,4 +116,4 @@ def eligibility_category_id(constraint):
   return constraint['group']['id']
 
 def pretty_eligibility(constraint):
-  return "Facebook users who are members of the \"%s\" group" % constraint['group']['name']
+  return _("Facebook users who are members of the \"%s\" group") % constraint['group']['name']

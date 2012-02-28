@@ -4,11 +4,16 @@
     {{ fbuser.id }} will be the user's UID, and {{ fbuser.language }}
     is his/her favorite language (Python :-).
   {% endcomment %}
-  Welcome, <fb:name uid="{{ fbuser.id }}" firstnameonly="true" useyou="false" />!
+
+  {% blocktrans with fbuser.id as fbuser_id %}
+  Welcome, <fb:name uid="{{ fbuser_id }}" firstnameonly="true" useyou="false" />!
+  {% endblocktrans %}
 </fb:header>
 
 <div class="clearfix" style="float: left; border: 1px #d8dfea solid; padding: 10px 10px 10px 10px; margin-left: 30px; margin-bottom: 30px; width: 500px;">
-  Your favorite language is {{ fbuser.language|escape }}.
+  {% blocktrans with fbuser.language|escape as language %}
+  Your favorite language is {{ language }}.
+  {% endblocktrans %}
   <br /><br />
 
   <div class="grayheader clearfix">

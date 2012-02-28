@@ -1,1 +1,1 @@
-Vote: {{custom_subject|safe}}
+{% load i18n %}{% blocktrans with custom_subject|safe as custom_subject %}Vote: {{custom_subject}}{% endblocktrans %}

@@ -89,7 +89,7 @@ def password_forgotten_view(request):
     except User.DoesNotExist:
       return render_template(request, 'password/forgot', {'return_url': request.GET.get('return_url', ''), 'error': 'no such username'})
     
-    body = """
+    body = _("""
 
 This is a password reminder:
 
@@ -98,7 +98,7 @@ Your password: %s
 
 --
 %s
-""" % (user.user_id, user.info['password'], settings.SITE_TITLE)
+""") % (user.user_id, user.info['password'], settings.SITE_TITLE)
 
     # FIXME: make this a task
     send_mail('password reminder', body, settings.SERVER_EMAIL, ["%s <%s>" % (user.info['name'], user.info['email'])], fail_silently=False)

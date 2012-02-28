@@ -1,8 +1,9 @@
-Dear {{voter.name}},
+{% load i18n %}{% blocktrans with voter.name as voter_name and custom_message|safe as message %}Dear {{voter_name}},
 
-{{custom_message|safe}}
+{{message}}
 
 Election Link: {{election_vote_url}}
 
 --
 Helios
+{% endblocktrans %}

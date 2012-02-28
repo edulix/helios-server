@@ -1,1 +1,1 @@
-Additional Information: {{custom_subject|safe}}
+{% load i18n %}{% blocktrans with custom_subject|safe as subject %}Additional Information: {{subject}}{% endblocktrans %}

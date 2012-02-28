@@ -3,6 +3,7 @@ import datetime
 from django import forms
 from django.db import models
 from django.forms import fields
+from django.utils.translation import ugettext_lazy as _
 from widgets import SplitSelectDateTimeWidget
 
 class SplitDateTimeField(fields.MultiValueField):
@@ -24,7 +25,7 @@ class SplitDateTimeField(fields.MultiValueField):
         """
         if data_list:
             if not (data_list[0] and data_list[1]):
-                raise forms.ValidationError("Field is missing data.")
+                raise forms.ValidationError(_("Field is missing data."))
             return datetime.datetime.combine(*data_list)
         return None
 

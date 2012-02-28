@@ -1,6 +1,8 @@
 {% extends TEMPLATE_BASE %}
+{% load i18n %}
 
 {% block content %}
+{% blocktrans %}
 <h1>Why we need your information</h1>
 
 <p>
@@ -11,11 +13,11 @@ when an election in which you participated has been tallied. We
 promise not to use this information for any other purpose. Without
 this information, we unfortunately cannot help you vote.
 </p>
-
+{% endblocktrans %}
 <form method="POST" action="">
 <input type="hidden" value="{{csrf_token}}" />
-<input type="submit" value="OK, I understand, let's do this login thing." /><br /><br />
-<a href="http://google.com">nope, get me out of here</a>.
+<input type="submit" value="{% trans "OK, I understand, let's do this login thing." %}" /><br /><br />
+<a href="http://google.com">{% trans "nope, get me out of here" %}</a>.
 </form>
 
 {% endblock %}

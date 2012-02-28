@@ -6,6 +6,7 @@ Google Authentication
 from django.http import *
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 import sys, os, cgi, urllib, urllib2, re
 from xml.etree import ElementTree
@@ -16,7 +17,7 @@ from openid import view_helpers
 STATUS_UPDATES = False
 
 # display tweaks
-LOGIN_MESSAGE = "Log in with my Google Account"
+LOGIN_MESSAGE = _("Log in with my Google Account")
 OPENID_ENDPOINT = 'https://www.google.com/accounts/o8/id'
 
 # FIXME!

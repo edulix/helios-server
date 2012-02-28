@@ -5,6 +5,8 @@ import facebook
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
+
 from datetime import datetime
 
 try:
@@ -39,7 +41,7 @@ def get_facebook_client():
     try:
         return _thread_locals.facebook
     except AttributeError:
-        raise ImproperlyConfigured('Make sure you have the Facebook middleware installed.')
+        raise ImproperlyConfigured(_('Make sure you have the Facebook middleware installed.'))
 
 
 def require_login(next=None, internal=None):
@@ -70,7 +72,7 @@ def require_login(next=None, internal=None):
             try:
                 fb = request.facebook
             except:
-                raise ImproperlyConfigured('Make sure you have the Facebook middleware installed.')
+                raise ImproperlyConfigured(_('Make sure you have the Facebook middleware installed.'))
 
             if internal is None:
                 internal = request.facebook.internal
@@ -133,7 +135,7 @@ def require_add(next=None, internal=None, on_install=None):
             try:
                 fb = request.facebook
             except:
-                raise ImproperlyConfigured('Make sure you have the Facebook middleware installed.')
+                raise ImproperlyConfigured(_('Make sure you have the Facebook middleware installed.'))
 
             if internal is None:
                 internal = request.facebook.internal

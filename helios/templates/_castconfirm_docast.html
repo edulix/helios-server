@@ -1,3 +1,4 @@
+{% load i18n %}
 {% if election.voting_has_started %}
   {% if not election.voting_has_stopped %}
 
@@ -16,28 +17,32 @@
 <br />
 {% endif %}
 
-    <button type="submit" style="font-size: 1.5em; height: 50px;">I am <u>{{voter.display_html_big|safe}}</u>, cast this ballot</button>
-    <span style="font-size:0.8em;"><br />You can cast as many ballots as you want.<br />Only the last one counts.</span>
+    <button type="submit" style="font-size: 1.5em; height: 50px;">
+    {% blocktrans with voter.display_html_big|safe as voter %}
+    I am <u>{{voter}}</u>, cast this ballot
+    {% endblocktrans %}
+    </button>
+    <span style="font-size:0.8em;"><br />{% trans "You can cast as many ballots as you want.<br />Only the last one counts." %}</span>
 </form>
 
 <p>
-    <button style="font-size: 1.5em;" onclick="document.location='./view';">cancel</button><br />
-    <span style="font-size:0.8em;">If you cancel now, your ballot will <em>NOT</em> be recorded.<br />
-    You can start the voting process over again, of course.</span>
+    <button style="font-size: 1.5em;" onclick="document.location='./view';">{% trans "cancel" %}</button><br />
+    <span style="font-size:0.8em;">{% trans "If you cancel now, your ballot will <em>NOT</em> be recorded.<br />
+    You can start the voting process over again, of course." %}</span>
 </p>
 
 </div>
 <div id="waiting_div">
-    Verifying and Casting your ballot<br />
+    {% trans "Verifying and Casting your ballot" %}<br />
     <img src="/static/helios/loading.gif" />
 </div>
   {% else %}
 <p style="font-size:1.4em;">
-  voting has stopped, sorry.
+  {% trans "voting has stopped, sorry." %}
 </p>
   {% endif %}
 {% else %}
 <p style="font-size:1.4em;">
-  voting has not yet begun, sorry.
+  {% trans "voting has not yet begun, sorry." %}
 </p>
 {% endif %}

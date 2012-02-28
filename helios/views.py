@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.core.paginator import Paginator
 from django.http import *
 from django.db import transaction
+from django.utils.translation import ugettext_lazy as _
 
 from mimetypes import guess_type
 
@@ -127,10 +128,10 @@ def admin_autologin(request):
   
   users = User.objects.filter(admin_p=True)
   if len(users) == 0:
-    return HttpResponse("no admin users!")
+    return HttpResponse(_("no admin users!"))
 
   if len(users) == 0:
-    return HttpResponse("no users!")
+    return HttpResponse(_("no users!"))
 
   user = users[0]
   request.session['user'] = {'type' : user.user_type, 'user_id' : user.user_id}
@@ -197,7 +198,7 @@ def trustee_keygenerator(request, election, trustee):
 @login_required
 def elections_administered(request):
   if not can_create_election(request):
-    return HttpResponseForbidden('only an administrator has elections to administer')
+    return HttpResponseForbidden(_('only an administrator has elections to administer'))
   
   user = get_user(request)
   elections = Election.get_by_user_as_admin(user)
@@ -215,7 +216,7 @@ def elections_voted(request):
 @login_required
 def election_new(request):
   if not can_create_election(request):
-    return HttpResponseForbidden('only an administrator can create an election')
+    return HttpResponseForbidden(_('only an administrator can create an election'))
     
   error = None
   
@@ -247,9 +248,9 @@ def election_new(request):
           
           return HttpResponseRedirect(reverse(one_election_view, args=[election.uuid]))
         else:
-          error = "An election with short name %s already exists" % election_params['short_name']
+          error = _("An election with short name %s already exists") % election_params['short_name']
       else:
-        error = "No special characters allowed in the short name."
+        error = _("No special characters allowed in the short name.")
     
   return render_template(request, "election_new", {'election_form': election_form, 'error': error})
   
@@ -336,13 +337,13 @@ def one_election_view(request, election):
   # status update message?
   if election.openreg:
     if election.voting_has_started:
-      status_update_message = u"Vote in %s" % election.name
+      status_update_message = _(u"Vote in %s") % election.name
     else:
-      status_update_message = u"Register to vote in %s" % election.name
+      status_update_message = _(u"Register to vote in %s") % election.name
 
   # result!
   if election.result:
-    status_update_message = u"Results are in for %s" % election.name
+    status_update_message = _(u"Results are in for %s") % election.name
   
   # a URL for the social buttons
   socialbuttons_url = get_socialbuttons_url(election_url, status_update_message)
@@ -453,7 +454,7 @@ def trustee_send_url(request, election, trustee_uuid):
   
   url = settings.SECURE_URL_HOST + reverse(trustee_login, args=[election.short_name, trustee.email, trustee.secret])
   
-  body = """
+  body = _("""
 
 You are a trustee for %s.
 
@@ -463,9 +464,9 @@ Your trustee dashboard is at
   
 --
 Helios  
-""" % (election.name, url)
+""") % (election.name, url)
 
-  send_mail('your trustee homepage for %s' % election.name, body, settings.SERVER_EMAIL, ["%s <%s>" % (trustee.name, trustee.email)], fail_silently=True)
+  send_mail(_('your trustee homepage for %s') % election.name, body, settings.SERVER_EMAIL, ["%s <%s>" % (trustee.name, trustee.email)], fail_silently=True)
 
   logging.info("URL %s " % url)
   return HttpResponseRedirect(reverse(list_trustees_view, args = [election.uuid]))
@@ -488,7 +489,7 @@ def trustee_upload_pk(request, election, trustee):
     
     # verify the pok
     if not trustee.public_key.verify_sk_proof(trustee.pok, algs.DLog_challenge_generator):
-      raise Exception("bad pok for this public key")
+      raise Exception(_("bad pok for this public key"))
     
     trustee.public_key_hash = utils.hash_b64(utils.to_json(trustee.public_key.toJSONDict()))
 
@@ -496,7 +497,7 @@ def trustee_upload_pk(request, election, trustee):
     
     # send a note to admin
     try:
-      election.admin.send_message("%s - trustee pk upload" % election.name, "trustee %s (%s) uploaded a pk." % (trustee.name, trustee.email))
+      election.admin.send_message(_("%s - trustee pk upload") % election.name, _("trustee %s (%s) uploaded a pk.") % (trustee.name, trustee.email))
     except:
       # oh well, no message sent
       pass
@@ -664,8 +665,8 @@ def one_election_cast_confirm(request, election):
 
     # status update this vote
     if voter and voter.user.can_update_status():
-      status_update_label = voter.user.update_status_template() % "your smart ballot tracker"
-      status_update_message = "I voted in %s - my smart tracker is %s.. #heliosvoting" % (get_election_url(election),cast_vote.vote_hash[:10])
+      status_update_label = voter.user.update_status_template() % _("your smart ballot tracker")
+      status_update_message = _("I voted in %s - my smart tracker is %s.. #heliosvoting") % (get_election_url(election),cast_vote.vote_hash[:10])
     else:
       status_update_label = None
       status_update_message = None
@@ -768,7 +769,7 @@ def one_election_cast_done(request, election):
   #   auth_views.do_local_logout(request)
   
   # tweet/fb your vote
-  socialbuttons_url = get_socialbuttons_url(cv_url, 'I cast a vote in %s' % election.name) 
+  socialbuttons_url = get_socialbuttons_url(cv_url, _('I cast a vote in %s') % election.name) 
   
   # remote logout is happening asynchronously in an iframe to be modular given the logout mechanism
   # include_user is set to False if logout is happening
@@ -942,7 +943,7 @@ def _register_voter(election, user):
 @election_view()
 def one_election_register(request, election):
   if not election.openreg:
-    return HttpResponseForbidden('registration is closed for this election')
+    return HttpResponseForbidden(_('registration is closed for this election'))
     
   check_csrf(request)
     
@@ -1038,7 +1039,7 @@ def trustee_upload_decryption(request, election, trustee_uuid):
     
     try:
       # send a note to admin
-      election.admin.send_message("%s - trustee partial decryption" % election.name, "trustee %s (%s) did their partial decryption." % (trustee.name, trustee.email))
+      election.admin.send_message(_("%s - trustee partial decryption") % election.name, _("trustee %s (%s) did their partial decryption.") % (trustee.name, trustee.email))
     except:
       # ah well
       pass
@@ -1235,9 +1236,9 @@ def voters_email(request, election):
   if not helios.VOTERS_EMAIL:
     return HttpResponseRedirect(reverse(one_election_view, args=[election.uuid]))
   TEMPLATES = [
-    ('vote', 'Time to Vote'),
-    ('info', 'Additional Info'),
-    ('result', 'Election Result')
+    ('vote', _('Time to Vote')),
+    ('info', _('Additional Info')),
+    ('result', _('Election Result'))
     ]
 
   template = request.REQUEST.get('template', 'vote')

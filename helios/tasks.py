@@ -6,6 +6,7 @@ ben@adida.net
 """
 
 from celery.decorators import task
+from django.utils.translation import ugettext_lazy as _
 
 from models import *
 from helios.view_utils import render_template_raw
@@ -33,7 +34,7 @@ def cast_vote_verify_and_store(cast_vote_id, status_update_message=None, **kwarg
             user.update_status(status_update_message)
     else:
         logger = cast_vote_verify_and_store.get_logger(**kwargs)
-        logger.error("Failed to verify and store %d" % cast_vote_id)
+        logger.error(_("Failed to verify and store %d" % cast_vote_id))
     
 @task()
 def voters_email(election_id, subject_template, body_template, extra_vars={},
@@ -89,13 +90,13 @@ def election_compute_tally(election_id):
     election.compute_tally()
 
     election_notify_admin.delay(election_id = election_id,
-                                subject = "encrypted tally computed",
-                                body = """
+                                subject = _("encrypted tally computed"),
+                                body = _("""
 The encrypted tally for election %s has been computed.
 
 --
 Helios
-""" % election.name)
+""") % election.name)
                                 
     if election.has_helios_trustee():
         tally_helios_decrypt.delay(election_id = election.id)
@@ -105,22 +106,22 @@ def tally_helios_decrypt(election_id):
     election = Election.objects.get(id = election_id)
     election.helios_trustee_decrypt()
     election_notify_admin.delay(election_id = election_id,
-                                subject = 'Helios Decrypt',
-                                body = """
+                                subject = _('Helios Decrypt'),
+                                body = _("""
 Helios has decrypted its portion of the tally
 for election %s.
 
 --
 Helios
-""" % election.name)
+""") % election.name)
 
 @task()
 def voter_file_process(voter_file_id):
     voter_file = VoterFile.objects.get(id = voter_file_id)
     voter_file.process()
     election_notify_admin.delay(election_id = voter_file.election.id, 
-                                subject = 'voter file processed',
-                                body = """
+                                subject = _('voter file processed'),
+                                body = _("""
 Your voter file upload for election %s
 has been processed.
 
@@ -128,7 +129,7 @@ has been processed.
 
 --
 Helios
-""" % (voter_file.election.name, voter_file.num_voters))
+""") % (voter_file.election.name, voter_file.num_voters))
 
 @task()
 def election_notify_admin(election_id, subject, body):
