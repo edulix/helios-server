@@ -46,7 +46,7 @@ def prepare_vars(request, vars):
 
   vars_with_user['STATIC'] = '/static/'
   vars_with_user['MEDIA_URL'] = '/static/'
-  vars_with_user['HELIOS_STATIC'] = '/helios/media/helios/'
+  vars_with_user['HELIOS_STATIC'] = '/static/helios/helios/'
   vars_with_user['utils'] = utils
   vars_with_user['settings'] = settings
   vars_with_user['TEMPLATE_BASE'] = 'templates/base.html'

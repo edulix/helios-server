@@ -127,7 +127,6 @@ def logout(request):
   """
   logout
   """
-
   return_url = request.GET.get('return_url',"/")
   response = do_complete_logout(request, return_url)
   if response:

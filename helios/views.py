@@ -1108,6 +1108,7 @@ def voters_list_pretty(request, election):
   eligibility_category_id = None
 
   try:
+    from auth.auth_systems import can_list_categories
     if admin_p and can_list_categories(user.user_type):
       categories = AUTH_SYSTEMS[user.user_type].list_categories(user)
       eligibility_category_id = election.eligibility_category_id(user.user_type)
