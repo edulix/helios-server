@@ -73,6 +73,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -97,6 +98,8 @@ INSTALLED_APPS = (
     'auth',
     'helios',
     'server_ui',
+    ## for translations
+    'rosetta',
 )
 
 ##

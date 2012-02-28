@@ -456,15 +456,15 @@ def trustee_send_url(request, election, trustee_uuid):
   
   body = _("""
 
-You are a trustee for %s.
+You are a trustee for %(name)s.
 
 Your trustee dashboard is at
 
-  %s
+  %(url)s
   
 --
 Helios  
-""") % (election.name, url)
+""") % dict(name=election.name, url=url)
 
   send_mail(_('your trustee homepage for %s') % election.name, body, settings.SERVER_EMAIL, ["%s <%s>" % (trustee.name, trustee.email)], fail_silently=True)
 
@@ -497,7 +497,7 @@ def trustee_upload_pk(request, election, trustee):
     
     # send a note to admin
     try:
-      election.admin.send_message(_("%s - trustee pk upload") % election.name, _("trustee %s (%s) uploaded a pk.") % (trustee.name, trustee.email))
+      election.admin.send_message(_("%s - trustee pk upload") % election.name, _("trustee %(name)s (%(email)s) uploaded a pk.") % dict(name=trustee.name, email=trustee.email))
     except:
       # oh well, no message sent
       pass
@@ -666,7 +666,7 @@ def one_election_cast_confirm(request, election):
     # status update this vote
     if voter and voter.user.can_update_status():
       status_update_label = voter.user.update_status_template() % _("your smart ballot tracker")
-      status_update_message = _("I voted in %s - my smart tracker is %s.. #heliosvoting") % (get_election_url(election),cast_vote.vote_hash[:10])
+      status_update_message = _("I voted in %(url)s - my smart tracker is %(hash)s.. #heliosvoting") % dict(url=get_election_url(election), hash=cast_vote.vote_hash[:10])
     else:
       status_update_label = None
       status_update_message = None
@@ -1039,7 +1039,7 @@ def trustee_upload_decryption(request, election, trustee_uuid):
     
     try:
       # send a note to admin
-      election.admin.send_message(_("%s - trustee partial decryption") % election.name, _("trustee %s (%s) did their partial decryption.") % (trustee.name, trustee.email))
+      election.admin.send_message(_("%s - trustee partial decryption") % election.name, _("trustee %(name)s (%(email)s) did their partial decryption.") % dict(name=trustee.name, email=trustee.email))
     except:
       # ah well
       pass
@@ -1383,6 +1383,5 @@ def ballot_list(request, election):
   # we explicitly cast this to a short cast vote
   return [v.last_cast_vote().ld_object.short.toDict(complete=True) for v in voters]
 
-
-
-
+def serve_templates(request, document_root, path):
+  return render_to_response(document_root + "/" + path)

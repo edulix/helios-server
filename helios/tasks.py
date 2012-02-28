@@ -122,14 +122,14 @@ def voter_file_process(voter_file_id):
     election_notify_admin.delay(election_id = voter_file.election.id, 
                                 subject = _('voter file processed'),
                                 body = _("""
-Your voter file upload for election %s
+Your voter file upload for election %(name)s
 has been processed.
 
-%s voters have been created.
+%(voters)s voters have been created.
 
 --
 Helios
-""") % (voter_file.election.name, voter_file.num_voters))
+""") % dict(name=voter_file.election.name, voters=voter_file.num_voters))
 
 @task()
 def election_notify_admin(election_id, subject, body):

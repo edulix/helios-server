@@ -1,8 +1,9 @@
+{% load i18n %}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=UTF-8" /> 
-  <title>Helios Voting Booth</title>
+  <title>{% trans "Helios Voting Booth" %}</title>
   <link rel="stylesheet" type="text/css" href="css/booth.css" />
   <link rel="stylesheet" type="text/css" href="css/forms.css" />
   <script language="javascript" src="js/jscrypto/class.js"></script>
@@ -33,8 +34,8 @@
 </head>
 <body>
 <div id="wrapper">
-<span style="float:right; padding: 7px 15px 5px 10px;">[<a href="javascript:BOOTH.exit();">exit</a>]</span>
-<div id="banner">Helios Voting Booth</div>
+<span style="float:right; padding: 7px 15px 5px 10px;">[<a href="javascript:BOOTH.exit();">{% trans "exit" %}</a>]</span>
+<div id="banner">{% trans "Helios Voting Booth" %}</div>
 <div id="content">
 
 <div id="header">
@@ -72,7 +73,7 @@ window.onbeforeunload = function(evt) {
     evt = window.event;
   }
   
-  var message = "If you leave this page with an in-progress ballot, your ballot will be lost.";
+  var message = "{% trans "If you leave this page with an in-progress ballot, your ballot will be lost." %}";
 
   if (evt) {
     evt.returnValue = message;
@@ -82,7 +83,7 @@ window.onbeforeunload = function(evt) {
 };
 
 BOOTH.exit = function() {
-    if (confirm("Are you sure you want to exit the booth and lose all information about your current ballot?")) {
+    if (confirm("{% trans "Are you sure you want to exit the booth and lose all information about your current ballot?" %}")) {
         BOOTH.started_p = false;
         window.location = BOOTH.election.cast_url;
     }
@@ -208,7 +209,7 @@ BOOTH.launch_async_encryption_answer = function(question_num) {
 BOOTH.validate_question = function(question_num) {
     // check if enough answers are checked
     if (BOOTH.ballot.answers[question_num].length < BOOTH.election.questions[question_num].min) {
-        alert('You need to select at least ' + BOOTH.election.questions[question_num].min + ' answer(s).');
+        alert('{% trans "You need to select at least" %} ' + BOOTH.election.questions[question_num].min + ' {% trans "answer(s)." %}');
         return false;
     }
     
@@ -295,7 +296,7 @@ BOOTH.click_checkbox = function(question_num, answer_num, checked_p) {
         if (!checkbox.checked)
             checkbox.disabled = true;
      });
-     $('#warning_box').html("Maximum number of options selected.<br />To change your selection, please de-select a current selection first.");
+     $('#warning_box').html("{% trans "Maximum number of options selected.<br />To change your selection, please de-select a current selection first." %}");
   } else {
      // enable the other checkboxes
      $('.ballot_answer').each(function(i, checkbox) {
@@ -306,7 +307,7 @@ BOOTH.click_checkbox = function(question_num, answer_num, checked_p) {
 };
 
 BOOTH.show_processing_before = function(str_to_execute) {
-    $('#processing_div').html("<h3 align='center'>Processing...</h3>");
+    $('#processing_div').html("<h3 align='center'>{% trans "Processing..." %}</h3>");
     BOOTH.show($('#processing_div'));
     
     // add a timeout so browsers like Safari actually display the processing message
@@ -495,7 +496,7 @@ BOOTH.audit_ballot = function() {
 
 BOOTH.post_audited_ballot = function() {
   $.post(BOOTH.election_url + "/post-audited-ballot", {'audited_ballot': BOOTH.audit_trail}, function(result) {
-    alert('This audited ballot has been posted.\nRemember, this vote will only be used for auditing and will not be tallied.\nClick "back to voting" and cast a new ballot to make sure your vote counts.');
+    alert('{% trans "This audited ballot has been posted.\nRemember, this vote will only be used for auditing and will not be tallied.\nClick "back to voting" and cast a new ballot to make sure your vote counts." %}');
   });
 };
 
@@ -536,22 +537,23 @@ BOOTH.do_done = function() {
 <div id="page">
   <div id="progress_div" style="display:none; width: 500px; margin:auto;">
       <table width="100%">
-          <tr><td id="progress_1">(1) Select</td><td id="progress_2">(2) Encrypt</td><td id="progress_3">(3) Submit</td></tr>
+          <tr><td id="progress_1">(1) {% trans "Select" %}</td><td id="progress_2">(2) {% trans "Encrypt" %}</td><td id="progress_3">(3) {% trans "Submit" %}</td></tr>
       </table>
   </div>
   <div id="election_div" class="panel">
-    <h3>Checking capabilities and loading election booth...</h3>
-    <div align="center"><img src="loading.gif" /><br />This may take up to 10 seconds</div>
+    <h3>{% trans "Checking capabilities and loading election booth..." %}</h3>
+    <div align="center"><img src="loading.gif" /><br />{% trans "This may take up to 10 seconds" %}</div>
   </div>
   
   <div id="error_div" class="panel" style="display: none;">
-    <h3>There's a problem</h3>
+    {% blocktrans %}<h3>There's a problem</h3>
     <p>
       It appears that your browser does not have Java enabled. Helios needs Java to perform encryption within the browser.
     </p>
     <p>
       You may be able to install Java by visiting <a target="_new" href="http://java.com">java.com</a>.
     </p>
+    {% endblocktrans %}
   </div>
 
   <div id="question_div" class="panel">
@@ -561,13 +563,13 @@ BOOTH.do_done = function() {
   </div>
   
   <div id="processing_div" class="panel" style="display:none;">
-      <h3 align="center">Processing....</h3>
+      <h3 align="center">{% trans "Processing...." %}</h3>
   </div>
 
   <div id="encrypting_div" class="panel" style="display:none;">
-      <h3 align="center">Helios is now encrypting your ballot<br />
+      <h3 align="center">{% trans "Helios is now encrypting your ballot" %}<br />
           <img src="encrypting.gif" /> <span style="font-size:0.7em; display:none;" id="percent_done_container">(<span id="percent_done">0</span>%)</span></h3>
-      
+      {% blocktrans %}
       <p>
           <b>If your browser complains about "long-running JavaScript"</b>, click Continue and let Helios finish encrypting your ballot.
       </p>
@@ -576,6 +578,7 @@ BOOTH.do_done = function() {
           <b>Why so long and complicated?</b>: Helios employs state-of-the-art cryptography to protect the secrecy of your ballot while giving you a smart tracker to ensure your ballot was counted.
           No other web-based voting system provides this level of election integrity. Even the latest browsers don't support this technology natively, which means Helios is encrypting your data in JavaScript, and that takes a little bit more time than you may be accustomed to.
       </p>
+      {% endblocktrans %}
   </div>
 
   <div id="seal_div" class="panel">

@@ -93,12 +93,12 @@ def password_forgotten_view(request):
 
 This is a password reminder:
 
-Your username: %s
-Your password: %s
+Your username: %(username)s
+Your password: %(password)s
 
 --
-%s
-""") % (user.user_id, user.info['password'], settings.SITE_TITLE)
+%(site_title)s
+""") % dict(username=user.user_id, password=user.info['password'], site_title=settings.SITE_TITLE)
 
     # FIXME: make this a task
     send_mail('password reminder', body, settings.SERVER_EMAIL, ["%s <%s>" % (user.info['name'], user.info['email'])], fail_silently=False)
@@ -154,15 +154,15 @@ def password_register(request):
 
       mail_body = _("""
 
-Hi %s, you just registered into %s. Here are your login details:
+Hi %(username)s, you just registered into %(site_title)s. Here are your login details:
 
-Your username: %s
-Your password: %s
+Your username: %(userid)s
+Your password: %(password)s
 
 --
-%s
-""") % (new_user.info['name'], settings.SITE_TITLE, new_user.user_id, new_user.info['password'], settings.SITE_TITLE)
-      mail_title = _("Welcome to %s, %s") % (settings.SITE_TITLE, new_user.info['name'])
+%(site_title)s
+""") % dict(usernmae=new_user.info['name'], site_title=settings.SITE_TITLE, userid=new_user.user_id, password=new_user.info['password'])
+      mail_title = _("Welcome to %(site_title)s, %(username)s") % dict(site_title=settings.SITE_TITLE, username=new_user.info['name'])
 
       send_mail(mail_title, mail_body, settings.SERVER_EMAIL, ["%s <%s>" % (new_user.info['name'], new_user.info['email'])], fail_silently=False)
 

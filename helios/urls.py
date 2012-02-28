@@ -35,6 +35,9 @@ urlpatterns = patterns('',
   (r'^elections/voted$', elections_voted),
   
   (r'^elections/(?P<election_uuid>[^/]+)', include('helios.election_urls')),
+
+  # static file with translations = template
+  (r'^static_templates/(?P<path>question.html)', serve_templates, {'document_root': settings.ROOT_PATH + '/helios/templates'}),
   
 )
 
